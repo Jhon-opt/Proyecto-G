@@ -1,0 +1,19 @@
+<div class="recover-password-container">
+    <h2>Recuperar Contraseña</h2>
+    <p>Introduce tu correo electrónico para restablecer tu contraseña:</p>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Correo Electrónico:</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          [(ngModel)]="email"
+          name="email"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+  </div>
+  

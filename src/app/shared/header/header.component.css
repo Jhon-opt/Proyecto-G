@@ -1,0 +1,97 @@
+/* Estilo general del navbar */
+.navbar {
+    background: linear-gradient(0deg, #000000, #0c530c); /* Fondo negro */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    padding: 0.8rem 1.5rem;
+  }
+  
+  .navbar .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff; /* Texto blanco */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Sombra de texto */
+  }
+  
+  .navbar .navbar-brand:hover {
+    color: #00AA00; /* Verde al pasar el mouse */
+  }
+  
+  .navbar .nav-link {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ffffff; /* Texto blanco */
+    margin-right: 1rem;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .navbar .nav-link:hover {
+    color: #00AA00; /* Verde al pasar el mouse */
+  }
+  
+  .navbar-toggler {
+    border: none;
+    background-color: #00AA00; /* Botón verde */
+    color: #ffffff;
+    font-size: 1.2rem;
+  }
+  
+  .navbar-toggler:hover {
+    background-color: #ffffff; /* Fondo blanco */
+    color: #00AA00; /* Texto verde */
+  }
+  
+  /* Botón de cerrar sesión */
+  .navbar .btn-outline-light {
+    border-color: #00AA00; /* Verde */
+    color: #ffffff; /* Texto blanco */
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+  
+  .navbar .btn-outline-light:hover {
+    background-color: #00AA00; /* Fondo verde */
+    color: #000000; /* Texto negro */
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  .offcanvas {
+    background: linear-gradient(180deg, #000000, #1a1a1a); /* Degradado vertical de negro a gris oscuro */
+    color: #ffffff; /* Texto blanco */
+    padding: 1.5rem;
+    border-right: 3px solid #00AA00; /* Detalle verde en el borde */
+  }
+  
+  .offcanvas .offcanvas-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* Línea sutil */
+  }
+  
+  .offcanvas .offcanvas-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #ffffff; /* Texto blanco */
+  }
+  
+  .offcanvas .nav-link {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #ffffff; /* Texto blanco */
+    margin-bottom: 0.8rem;
+    transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+  }
+  
+  .offcanvas .nav-item .nav-link:hover {
+    color: #00AA00 !important;
+    transform: translateX(5px);
+  }
+  
+  
