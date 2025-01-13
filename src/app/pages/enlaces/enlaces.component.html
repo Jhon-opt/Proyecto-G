@@ -1,4 +1,8 @@
 <div class="container mt-4">
+    <div class="back-home-button" *ngIf="authService.isAuthenticated()">
+        <button class="btn btn-back" (click)="navigateToHome()">&#8592; Volver al Homepage</button>
+      </div>
+      
     <h2>Enlaces Importantes</h2>
     <div class="links-box">
       <a href="https://www.youtube.com" target="_blank" class="btn btn-link">Videos</a>

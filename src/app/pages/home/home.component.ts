@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';  // Importar CommonModule
-
 @Component({
   selector: 'app-home',
   standalone: true,  // Asegúrate de que sea standalone

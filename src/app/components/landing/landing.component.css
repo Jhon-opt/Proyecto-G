@@ -1,67 +1,98 @@
-.landing-container {
-    display: flex;
-    justify-content: space-between; /* Mantiene el espacio entre las secciones */
-    align-items: center;
-    height: 100vh;
-    background-color: #000; /* Fondo negro */
-    color: #fff; /* Texto blanco */
-    padding: 0 2rem;
+.main-header-bar-navigation {
+  display: flex;
+  justify-content: center; /* Centra los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
+  background-color: #000; /* Fondo negro */
+  padding: 1rem; /* Espaciado interno */
+  border-bottom: 2px solid #00AA00; /* Línea verde separadora */
 }
 
+.menu-item {
+  margin: 0 1rem; /* Espaciado entre los enlaces */
+  padding: 0.5rem 1rem; /* Espaciado interno de los enlaces */
+  color: #00DD00; /* Verde brillante */
+  text-decoration: none; /* Quita el subrayado */
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.menu-item:hover {
+  background-color: #00AA00; /* Verde más oscuro al pasar el cursor */
+  color: #fff; /* Texto blanco al pasar el cursor */
+}
+
+
+/* Ajustes para el contenedor principal */
+.landing-container {
+  display: flex;
+  flex-direction: column; /* Asegura que el contenido esté debajo del menú */
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  background-color: #000;
+  color: #fff;
+  padding: 5rem 2rem 2rem; /* Agrega espacio superior para el menú */
+}
+
+/* Sección de bienvenida */
 .welcome-section {
-    max-width: 70%; /* Mantiene el texto en la mitad izquierda */
+  max-width: 70%;
+  text-align: center;
+  margin-top: 2rem;
 }
 
 .welcome-message {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+  font-size: 3rem;
+  margin-bottom: 1rem;
 }
 
 .description {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
 }
 
+/* Botones */
 .button-group {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 
 .btn {
-    padding: 0.8rem 1.5rem;
-    background-color: #00DD00; /* Verde brillante */
-    color: #000; /* Texto negro */
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+  padding: 0.8rem 1.5rem;
+  background-color: #00DD00;
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #00AA00; /* Verde más oscuro al pasar el cursor */
+  background-color: #00AA00;
 }
 
+/* Sección de imagen */
 .image-section {
-    flex: 1; /* Permite que la sección de imagen ocupe el espacio restante */
-    display: flex;
-    justify-content: flex-start; /* Alinea la imagen a la izquierda */
-    align-items: center; /* Centra la imagen verticalmente */
-    margin-left: 10rem; /* Agrega margen a la izquierda de la imagen */
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 10rem;
 }
 
 .image-section img {
-    max-width: 80%; /* Asegúrate de que la imagen no exceda el contenedor */
-    height: auto;
-    border-radius: 10px;
+  max-width: 80%;
+  height: auto;
+  border-radius: 10px;
 }
 
-
+/* Parallax */
 .parallax {
-  /* Tamaño completo del contenedor */
   position: relative;
-  height: 100vh; /* La altura será igual a la del viewport */
-  background-size: cover; /* Asegura que la imagen cubra todo el contenedor */
-  background-attachment: fixed; /* Esto crea el efecto parallax */
+  height: 100vh;
+  background-size: cover;
+  background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -74,7 +105,6 @@
   background-image: url('/assets/images/humo.jpg');
 }
 
-/* Estilo para el contenido sobre el parallax */
 .parallax-content {
   position: absolute;
   top: 50%;
@@ -89,5 +119,5 @@
   width: 80%;
   height: 2px;
   margin: 20px auto;
-  background-color: #00AA00; /* Verde */
+  background-color: #00AA00;
 }
