@@ -1,0 +1,116 @@
+.grafica-container {
+  text-align: center;
+  padding: 20px;
+  background-color: #000;
+  color: #fff;
+}
+
+.grafica-container h2 {
+  margin-bottom: 30px;
+  font-size: 2.3rem;
+  letter-spacing: 1px;
+}
+
+canvas {
+  display: block;
+  margin: 20px auto;
+  width: 100% !important;
+  max-width: 1000px;
+  height: 450px !important;
+  border: 2px solid;
+  border-radius: 10px;
+  background-color: #111;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos específicos para cada gráfica */
+.co-chart canvas {
+  border-color: #00AA00;
+  box-shadow: 0 0 15px rgba(0, 170, 0, 0.2);
+}
+
+.temp-chart canvas {
+  border-color: #FF4444;
+  box-shadow: 0 0 15px rgba(255, 68, 68, 0.2);
+}
+
+.pm25-chart canvas {
+  border-color: #FFA500;
+  box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+}
+
+/* Colores de títulos */
+.co-chart h2 {
+  color: #00AA00;
+  text-shadow: 0 0 10px rgba(0, 170, 0, 0.3);
+}
+
+.temp-chart h2 {
+  color: #FF4444;
+  text-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
+}
+
+.pm25-chart h2 {
+  color: #FFA500;
+  text-shadow: 0 0 10px rgba(255, 165, 0, 0.3);
+}
+
+/* Efecto hover para mejor interactividad */
+canvas:hover {
+  transform: scale(1.005);
+  transition: transform 0.3s ease;
+}
+
+
+.calidad-aire {
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #1a1a1a;
+  border-radius: 10px;
+  max-width: 600px;
+}
+
+.indicador {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.valor {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #00AA00;
+}
+
+.categoria {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.categoria.bueno {
+  background: #00AA00;
+  color: white;
+}
+
+.categoria.moderado {
+  background: #FFD700;
+  color: black;
+}
+
+.categoria.peligroso {
+  background: #FF4444;
+  color: white;
+}
+
+.consejo {
+  font-size: 1.2rem;
+  color: #CCCCCC;
+  margin-top: 1rem;
+}
+
+
+

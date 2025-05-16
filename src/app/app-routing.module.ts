@@ -10,6 +10,7 @@ import { LandingComponent } from './components/landing/landing.component';
 import { RecuperarContrasenaComponent } from './pages/recuperar-contrasena/recuperar-contrasena.component';
 import { InformacionProyectoComponent } from './pages/informacion-proyecto/informacion-proyecto.component';
 import { EnlacesComponent } from './pages/enlaces/enlaces.component';
+import { GraficasSensoresComponent } from './graficas-sensores/graficas-sensores.component';
 
 const routes: Routes = [
   { path: '', component: LandingComponent }, 
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'recuperar-contraseña', component: RecuperarContrasenaComponent },
   { path: 'informacion-proyecto', component: InformacionProyectoComponent },
   { path: 'enlaces', component: EnlacesComponent },
+  { path: 'graficas-sensores', component: GraficasSensoresComponent },
   { path: '**', redirectTo: 'login' }, 
 ];
 

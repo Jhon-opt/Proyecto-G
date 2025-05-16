@@ -5,7 +5,7 @@ import { AuthService } from './services/auth.service';
   selector: 'app-root',
   standalone: false,
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'], // Asegúrate de usar `styleUrls` (en plural)
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   title = 'frontend';

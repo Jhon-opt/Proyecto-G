@@ -1,0 +1,50 @@
+<div class="grafica-container">
+  <!-- Sección Calidad del Aire -->
+  <div class="calidad-aire" *ngIf="categoria && consejo">
+    <h2>Calidad del Aire Actual</h2>
+    <div class="indicador">
+      <span class="valor">{{ calidadAire !== null ? (calidadAire | number:'1.1-1') : '---' }}</span>
+      <span class="categoria {{ categoria | lowercase }}">{{ categoria }}</span>
+    </div>
+    <p class="consejo">{{ consejo }}</p>
+  </div>
+
+  <!-- Gráfica CO -->
+  <div class="co-chart">
+    <h2>Monitoreo de CO (ppm)</h2>
+    <canvas baseChart
+      [data]="charts.co.data"
+      [options]="charts.co.options"
+      [type]="chartType">
+    </canvas>
+  </div>
+
+  <!-- Gráfica Temperatura -->
+  <div class="temp-chart" *ngIf="charts.temp.data.datasets[0].data.length > 0">
+    <h2>Temperatura Ambiental (°C)</h2>
+    <canvas baseChart
+      [data]="charts.temp.data"
+      [options]="charts.temp.options"
+      [type]="chartType">
+    </canvas>
+  </div>
+
+  <!-- Gráfica PM2.5 -->
+  <div class="pm25-chart" *ngIf="charts.pm25.data.datasets[0].data.length > 0">
+    <h2>Material Particulado Fino (PM2.5 µg/m³)</h2>
+    <canvas baseChart
+      [data]="charts.pm25.data"
+      [options]="charts.pm25.options"
+      [type]="chartType">
+    </canvas>
+  </div>
+</div>
+<!-- <hr>
+
+<hr>
+
+<hr>
+
+<hr>
+
+<hr> -->

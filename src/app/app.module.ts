@@ -13,9 +13,9 @@ import { LandingComponent } from './components/landing/landing.component';
 import { RecuperarContrasenaComponent } from './pages/recuperar-contrasena/recuperar-contrasena.component';
 import { InformacionProyectoComponent } from './pages/informacion-proyecto/informacion-proyecto.component';
 import { EnlacesComponent } from './pages/enlaces/enlaces.component';
-
-
-
+import { GraficasSensoresComponent } from './graficas-sensores/graficas-sensores.component';
+import { BaseChartDirective } from 'ng2-charts';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +36,7 @@ import { EnlacesComponent } from './pages/enlaces/enlaces.component';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [provideCharts(withDefaultRegisterables())],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
