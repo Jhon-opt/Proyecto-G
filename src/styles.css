@@ -1,8 +1,10 @@
-:root {
-  --footer-height: 60px; /* Ajusta según tu footer */
+@import "tailwindcss";
+@plugin "daisyui"{
+  themes: night ;
 }
 
-html, body {
+@import 'maplibre-gl/dist/maplibre-gl.css';
+/* html, body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -17,11 +19,11 @@ html, body {
 .content-wrapper {
   flex: 1;
   position: relative;
-  padding-bottom: var(--footer-height);
+
 }
 
 app-footer {
   position: relative;
   height: var(--footer-height);
   margin-top: calc(-1 * var(--footer-height));
-}
+} */

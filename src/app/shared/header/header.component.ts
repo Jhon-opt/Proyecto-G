@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AuthGuard } from '../../services/AuthGuard';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class HeaderComponent implements OnInit {
   isLandingPage: boolean = false;
 
-  constructor(public authService: AuthService, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(public authService: AuthService, private router: Router, private activatedRoute: ActivatedRoute, public AuthGuard: AuthGuard) {}
 
   ngOnInit(): void {
     // Detectar si estamos en la página de inicio

@@ -2,27 +2,27 @@
     max-width: 800px;
     margin: auto;
   }
-  
+
   .section {
     margin-bottom: 20px;
   }
-  
+
   .section h3 {
     color: #007bff;
   }
-  
+
   textarea.form-control {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
   }
-  
+
   .btn-primary {
     background-color: #007bff;
     border: none;
   }
-  
+
   .btn-primary:hover {
     background-color: #0056b3;
   }
