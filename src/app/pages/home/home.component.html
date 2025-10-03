@@ -1,18 +1,68 @@
-<div class="container mt-5">
-    <!-- Mensaje de bienvenida -->
-    <div class="card text-center">
-      <div class="card-body">
-        <h1 class="card-title">¡Bienvenido!</h1>
-        <p class="card-text">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, distinctio eligendi. Reprehenderit, delectus magni! Necessitatibus odio ipsam, ullam amet cum dolorem eos enim sed! Impedit atque autem id error commodi!
-        </p>
-      </div>
-    </div>
-  
-    <!-- Imagen de tamaño mediano -->
-    <div class="text-center mt-4">
-        <img src="assets/images/metis.jpg" alt="Welcome Image">
-
-    </div>
+<div class="max-w-5xl mx-auto px-4 py-10">
+  <!-- Mensaje de bienvenida -->
+  <div class="bg-base-100 shadow-lg rounded-xl text-center p-8">
+    <h1 class="text-3xl text-white font-bold mb-4">¡Bienvenido!</h1>
+    <p class="text-white leading-relaxed">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, distinctio eligendi.
+      Reprehenderit, delectus magni! Necessitatibus odio ipsam, ullam amet cum dolorem eos enim sed!
+      Impedit atque autem id error commodi!
+    </p>
+    <!-- Botón para probar el cambio reactivo -->
+    <!-- Después del contenedor del mapa -->
+<div class="mt-4 flex gap-2 p-4">
+  <button (click)="changeICA(25)" class="btn btn-primary">ICA: 25</button>
+  <button (click)="changeICA(5)" class="btn btn-secondary">ICA: 5</button>
+  <button (click)="changeICA(50)" class="btn btn-accent">ICA: 50</button>
+</div>
   </div>
-  
+
+  <!-- Imagen -->
+  <div class="mt-8 flex justify-center">
+    <img
+      src="assets/images/metis.jpg"
+      alt="Welcome Image"
+      class="w-80 h-auto rounded-lg shadow-md"
+    />
+  </div>
+</div>
+
+<!-- Contenedor del mapa con controles superpuestos -->
+<div class="relative w-full h-[600px] mt-10 rounded-lg shadow-md overflow-hidden">
+  <!-- Mapa -->
+  <div #map class="absolute inset-0 w-full h-full"></div>
+
+  <!-- Controles del mapa -->
+  <section
+    id="map-controls"
+    class="absolute top-4 left-4 bg-black/70 text-white p-4 rounded-lg shadow-lg max-w-xs"
+  >
+    <h2 class="text-lg font-bold mb-2">
+      Zoom
+      <small class="text-gray-300 font-normal">
+        {{ zoom() | number: '1.0-0' }}
+      </small>
+    </h2>
+
+    <!-- Slider -->
+    <!-- <input
+      type="range"
+      min="1"
+      max="19"
+      [value]="zoom()"
+      class="range range-info w-full"
+      (input)="zoom.set(+txtZoom.value)"
+      #txtZoom
+    /> -->
+
+    <!-- Coordenadas -->
+    <h2 class="text-lg font-bold mt-4">Coordenadas</h2>
+    <pre class="text-sm text-gray-300 font-normal">
+{{
+  {
+    latitude: cordinates().lat | number: '1.4-4',
+    longitude: cordinates().lng | number: '1.4-4'
+  } | json
+}}
+    </pre>
+  </section>
+</div>

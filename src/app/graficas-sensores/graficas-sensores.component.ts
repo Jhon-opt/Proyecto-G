@@ -149,9 +149,14 @@ export class GraficasSensoresComponent implements OnInit {
   loadAireData(): void {
     this.aireService.getAireData().subscribe({
       next: (data: AireData[]) => {
-        const labels = data.map(d =>
-          d.fecha_lectura ? d.fecha_lectura.substring(0, 10) : `ID ${d.id}`
-        );
+        const labels = data.map(d => {
+  if (!d.fecha_lectura) return `ID ${d.id}`;
+  return new Date(d.fecha_lectura).toLocaleTimeString('es-CO', {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'UTC' // fuerza UTC
+  });
+});
 
         // Actualizar datos para todas las gráficas
         this.charts.co.data.labels = labels;

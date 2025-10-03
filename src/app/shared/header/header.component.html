@@ -1,58 +1,99 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="!isLandingPage">
-  <a class="navbar-brand text-white" *ngIf="!authService.isAuthenticated()">Mi Aplicación</a>
+<nav class="navbar bg-base-100 shadow-md" *ngIf="!isLandingPage">
+  <!-- Marca -->
+  <div class="flex-1 ">
+    <a routerLink="/" class="btn btn-ghost normal-case text-lg font-bold text-white" *ngIf="!authService.isAuthenticated()">
+      Aire<span class="text-green-500">|UD</span>
+    </a>
+  </div>
 
-  <button
-    class="navbar-toggler"
-    type="button"
-    data-toggle="collapse"
-    data-target="#navbarNav"
-    aria-controls="navbarNav"
-    aria-expanded="false"
-    aria-label="Toggle navigation"
-  >
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  <!-- Botón responsive -->
+  <div class="flex-none lg:hidden">
+    <button class="btn btn-square btn-ghost" tabindex="0">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
 
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ml-auto">
+  <!-- Menú -->
+  <div class="flex-none hidden lg:flex">
+    <ul class="menu menu-horizontal px-1 gap-2">
       <!-- Menú para usuarios no autenticados -->
       <ng-container *ngIf="!authService.isAuthenticated()">
-        <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/">Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/crear-cuenta">Crear Cuenta</a>
-        </li>
+        <li><a routerLink="/" class="btn btn-active btn-success">Inicio</a></li>
+        <li><a routerLink="/crear-cuenta"  class="btn btn-active btn-primary">Crear Cuenta</a></li>
       </ng-container>
 
       <!-- Menú para usuarios autenticados -->
-      <ng-container *ngIf="authService.isAuthenticated()">
-        <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/home">Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/perfil">Perfil</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/enlaces">Enlaces</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/graficas-sensores">Visualización</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/informacion-proyecto">Información del Proyecto</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" href="#" (click)="logout()">Cerrar Sesión</a>
-        </li>
-      </ng-container>
+      <ng-container *ngIf="authService.isAuthenticated() && AuthGuard.canActivate()">
+  <li>
+    <button
+      routerLink="/home"
+      routerLinkActive="bg-green-600 text-black"
+      class="w-full text-left px-4 py-2 rounded-lg text-green-400 hover:bg-green-700 hover:text-white transition-colors rounded"
+    >
+      Inicio
+    </button>
+  </li>
+
+  <li>
+    <button
+      routerLink="/perfil"
+      routerLinkActive="bg-green-600 text-black"
+      class="w-full text-left px-4 py-2 rounded-lg text-green-400 hover:bg-green-700 hover:text-white transition-colors rounded"
+    >
+      Perfil
+    </button>
+  </li>
+
+  <li>
+    <button
+      routerLink="/enlaces"
+      routerLinkActive="bg-green-600 text-black"
+      class="w-full text-left px-4 py-2 rounded-lg text-green-400 hover:bg-green-700 hover:text-white transition-colors rounded"
+    >
+      Enlaces
+    </button>
+  </li>
+
+  <li>
+    <button
+      routerLink="/graficas-sensores"
+      routerLinkActive="bg-green-600 text-black"
+      class="w-full text-left px-4 py-2 rounded-lg text-green-400 hover:bg-green-700 hover:text-white transition-colors rounded"
+    >
+      Visualización
+    </button>
+  </li>
+
+  <li>
+    <button
+      routerLink="/informacion-proyecto"
+      routerLinkActive="bg-green-600 text-black"
+      class="w-full text-left px-4 py-2 rounded-lg text-green-400 hover:bg-green-700 hover:text-white transition-colors rounded"
+    >
+      Información del Proyecto
+    </button>
+  </li>
+
+  <li>
+    <button
+      (click)="logout()"
+      class="w-full text-left px-4 py-2 rounded-lg text-red-400 hover:bg-red-600 hover:text-white transition-colors rounded"
+    >
+      Cerrar Sesión
+    </button>
+  </li>
+</ng-container>
+
     </ul>
   </div>
 </nav>
 
-
 <!-- Menú desplegable lateral -->
-<!-- 
+<!--
 <div
   class="offcanvas offcanvas-start bg-dark text-white"
   tabindex="-1"
