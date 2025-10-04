@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { Router, ActivatedRoute } from '@angular/router';
 import { AuthGuard } from '../../services/AuthGuard';
 
 @Component({
   selector: 'app-header',
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
@@ -15,9 +17,8 @@ export class HeaderComponent implements OnInit {
   constructor(public authService: AuthService, private router: Router, private activatedRoute: ActivatedRoute, public AuthGuard: AuthGuard) {}
 
   ngOnInit(): void {
-    // Detectar si estamos en la página de inicio
     this.router.events.subscribe(() => {
-      this.isLandingPage = this.router.url === '/'; // Compara la ruta actual con '/'
+      this.isLandingPage = this.router.url === '/';
     });
   }
 

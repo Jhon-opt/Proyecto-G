@@ -24,7 +24,7 @@ export class HomeComponent implements AfterViewInit {
   map = signal<maplibregl.Map | null>(null);
   cordinates = signal({ lat: 4.5796, lng: -74.1572 });
   zoom = signal(17);
-  icaValue = signal(11);
+  icaValue = signal(18);
 
   // Efecto para sincronizar el zoom con la señal
   zoomEffect = effect(() => {

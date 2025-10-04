@@ -1,39 +1,47 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
+import { HeaderComponent } from './shared/header/header.component';
+import { FooterComponent } from './shared/footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  standalone: false,
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    HeaderComponent,
+    FooterComponent
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'frontend';
   isLoggedIn: boolean = false;
   inactivityTime: number = 0;
-  maxInactivityTime: number = 1800; // 30 minutos
+  maxInactivityTime: number = 1800;
 
   constructor(private authService: AuthService) {}
 
   @HostListener('window:beforeunload', ['$event'])
   handleBeforeUnload(event: Event): void {
-    this.authService.logout(); // Cierra sesión al cerrar la página
+    this.authService.logout();
   }
 
   @HostListener('document:mousemove', ['$event'])
   resetInactivityTimer(): void {
-    this.inactivityTime = 0; // Resetea el temporizador de inactividad
+    this.inactivityTime = 0;
   }
 
   @HostListener('document:keydown', ['$event'])
   resetInactivityTimerOnKey(event: KeyboardEvent): void {
-    this.inactivityTime = 0; // Resetea el temporizador de inactividad
+    this.inactivityTime = 0;
   }
 
   ngOnInit(): void {
-    // Verificar si el usuario está autenticado al cargar la página
     this.isLoggedIn = this.authService.checkAuthentication();
-    // Verificar si el usuario está logueado
     if (this.authService.isLoggedIn()) {
       this.startInactivityTimer();
     }
@@ -43,7 +51,8 @@ export class AppComponent {
     setInterval(() => {
       this.inactivityTime++;
       if (this.inactivityTime >= this.maxInactivityTime) {
-        this.authService.logout(); // Cierra sesión si el usuario está inactivo por más de 30 minutos
+        this.authService.logout();
       }
     }, 1000);
-  }}
+  }
+}

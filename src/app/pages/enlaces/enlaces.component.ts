@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-enlaces',
-  standalone: false,
-  
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './enlaces.component.html',
-  styleUrl: './enlaces.component.css'
+  styleUrls: ['./enlaces.component.css']
 })
 export class EnlacesComponent {
   constructor(private router: Router, public authService: AuthService) {}
+
   navigateToHome(): void {
     this.router.navigate(['/home']);
   }

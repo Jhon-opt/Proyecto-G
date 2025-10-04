@@ -3,11 +3,12 @@ import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartType } from 'chart.js';
 import { AireService, AireData } from '../services/aire.service';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-graficas-sensores',
   standalone: true,
-  imports: [BaseChartDirective,CommonModule],
+  imports: [BaseChartDirective,CommonModule,RouterModule],
   templateUrl: './graficas-sensores.component.html',
   styleUrls: ['./graficas-sensores.component.css'],
 })
