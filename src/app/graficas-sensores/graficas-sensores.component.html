@@ -19,7 +19,27 @@
   <!-- Consejo -->
   <p class="consejo mt-3 text-gray-200">{{ consejo }}</p>
 </div>
+<div class="flex justify-center items-center gap-4 my-4">
+  <label for="fechaInicio" class="font-semibold">Selecciona fecha:</label>
+  <input
+    id="fechaInicio"
+    type="date"
+    class="px-4 py-2 border rounded-lg"
+    [min]="minDate"
+    [max]="maxDate"
+    [(ngModel)]="selectedDate"
+  />
+  <button
+    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+    (click)="loadAireDataByDate()"
+  >
+    Buscar
+  </button>
+</div>
 
+<div *ngIf="errorMessage" class="text-red-500 font-semibold my-2 text-center">
+  {{ errorMessage }}
+</div>
 
 
   <!-- Controles de rango -->

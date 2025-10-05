@@ -7,10 +7,11 @@ import { RouterModule } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-graficas-sensores',
   standalone: true,
-  imports: [BaseChartDirective, CommonModule, RouterModule],
+  imports: [BaseChartDirective, CommonModule, RouterModule, FormsModule  ],
   templateUrl: './graficas-sensores.component.html',
   styleUrls: ['./graficas-sensores.component.css'],
 })
@@ -22,6 +23,9 @@ export class GraficasSensoresComponent implements OnInit {
    isLoading: boolean = false;
   errorMessage: string | null = null;
 
+  selectedDate: string = '';
+minDate: string = '';
+maxDate: string = '';
   // Nueva propiedad para saber qué gráfica mostrar
   selectedChart: 'co' | 'temp' | 'pm25' = 'co';
 
@@ -148,14 +152,24 @@ export class GraficasSensoresComponent implements OnInit {
   constructor(private aireService: AireService) {}
 
   ngOnInit(): void {
-    // cada 10 segundos consulta de nuevo
-    this.subDatos = interval(10000).subscribe(() => this.loadAireData());
-    this.subIqa = interval(10000).subscribe(() => this.loadCalidadAire());
+  // cada 10 segundos consulta de nuevo
+  this.subDatos = interval(10000).subscribe(() => this.loadAireData());
+  this.subIqa = interval(10000).subscribe(() => this.loadCalidadAire());
 
-    // primera carga inmediata
-    this.loadAireData();
-    this.loadCalidadAire();
-  }
+  // primera carga inmediata
+  this.loadAireData();
+  this.loadCalidadAire();
+
+  // Configuración del rango de fechas
+  const today = new Date();
+
+  // Fecha máxima = hoy
+  this.maxDate = today.toISOString().split('T')[0];
+
+  // Fecha mínima = 26 del mes pasado
+  const min = new Date(today.getFullYear(), today.getMonth() - 1, 26);
+  this.minDate = min.toISOString().split('T')[0];
+}
 
   ngOnDestroy(): void {
     this.subDatos?.unsubscribe();
@@ -220,6 +234,57 @@ getColorClass(): string {
   } else {
     return 'text-purple-700'; // Morado
   }
+}
+
+loadAireDataByDate(): void {
+  if (!this.selectedDate) return; // por si no hay fecha seleccionada
+
+  this.aireService.getAireDataByDate(this.selectedDate).subscribe({
+    next: (data: AireData[]) => {
+      if (!data || data.length === 0) {
+        this.errorMessage = 'No hay datos disponibles para la fecha seleccionada.';
+        // Limpiar gráficas si no hay datos
+        this.charts.co.data.labels = [];
+        this.charts.temp.data.labels = [];
+        this.charts.pm25.data.labels = [];
+        this.charts.co.data.datasets[0].data = [];
+        this.charts.temp.data.datasets[0].data = [];
+        this.charts.pm25.data.datasets[0].data = [];
+        this.chart?.update();
+        return;
+      }
+
+      this.errorMessage = null;
+
+      const labels = data.map(d => {
+        if (!d.fecha_lectura) return `ID ${d.id}`;
+        return new Date(d.fecha_lectura).toLocaleTimeString('es-CO', {
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: 'UTC'
+        });
+      });
+
+      // Actualizar gráficas
+      this.charts.co.data.labels = labels;
+      this.charts.temp.data.labels = labels;
+      this.charts.pm25.data.labels = labels;
+
+      this.charts.co.data.datasets[0].data = data.map(d => d.co_ppm);
+      this.charts.temp.data.datasets[0].data = data.map(d => d.temp);
+      this.charts.pm25.data.datasets[0].data = data.map(d => d.pm25);
+
+      this.chart?.update();
+    },
+    error: (err) => {
+      if (err.status === 404) {
+        this.errorMessage = 'No se encontró información para la fecha seleccionada.';
+      } else {
+        this.errorMessage = 'Error al cargar datos. Intenta de nuevo.';
+      }
+      console.error('Error al cargar datos por fecha:', err);
+    }
+  });
 }
 
 

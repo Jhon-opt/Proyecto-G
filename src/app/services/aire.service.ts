@@ -25,6 +25,7 @@ export interface CalidadAire {
 export class AireService {
   private apiUrl = 'https://apiaire.onrender.com/api/aire/ver';
   private apiUrl2 = 'https://apiaire.onrender.com/api/aire';
+  private apiUrlCalendar = 'https://apiaire.onrender.com/api/aire/ver/fecha';
 
   constructor(private http: HttpClient) {}
 
@@ -48,4 +49,15 @@ export class AireService {
 getCalidadAire(): Observable<CalidadAire> {
   return this.http.get<CalidadAire>(`${this.apiUrl2}/iqa`);
 }
+
+
+getAireDataByDate(fecha: string): Observable<AireData[]> {
+  return this.http
+    .get<{ status: string; data: any[] }>(
+      `${this.apiUrlCalendar}?fecha=${fecha}`
+    )
+    .pipe(map(response => this.transformData(response.data)));
+}
+
+
 }
