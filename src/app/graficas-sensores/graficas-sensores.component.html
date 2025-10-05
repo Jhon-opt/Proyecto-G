@@ -35,11 +35,14 @@
   >
     Buscar
   </button>
+
+  <button (click)="showAllData()" class="btn btn-primary">
+  Mostrar todos los registros
+</button>
+
 </div>
 
-<div *ngIf="errorMessage" class="text-red-500 font-semibold my-2 text-center">
-  {{ errorMessage }}
-</div>
+
 
 
   <!-- Controles de rango -->
@@ -70,35 +73,43 @@
 </div> -->
 
 
-  <!-- Gráfica CO -->
   <div class="co-chart">
-    <h2>Monitoreo de CO (ppm)</h2>
-    <canvas baseChart
-      [data]="charts.co.data"
-      [options]="charts.co.options"
-      [type]="chartType">
-    </canvas>
-  </div>
+  <h2>Monitoreo de CO (ppm)</h2>
+  <canvas *ngIf="charts.co.data.datasets[0].data.length > 0"
+          baseChart
+          #chartCO
+          [data]="charts.co.data"
+          [options]="charts.co.options"
+          [type]="chartType">
+  </canvas>
+  <p *ngIf="charts.co.data.datasets[0].data.length === 0">No hay datos disponibles</p>
+</div>
 
-  <!-- Gráfica Temperatura -->
-  <div class="temp-chart" *ngIf="charts.temp.data.datasets[0].data.length > 0">
-    <h2>Temperatura Ambiental (°C)</h2>
-    <canvas baseChart
-      [data]="charts.temp.data"
-      [options]="charts.temp.options"
-      [type]="chartType">
-    </canvas>
-  </div>
+<div class="temp-chart">
+  <h2>Temperatura Ambiental (°C)</h2>
+  <canvas *ngIf="charts.temp.data.datasets[0].data.length > 0"
+          baseChart
+          #chartTemp
+          [data]="charts.temp.data"
+          [options]="charts.temp.options"
+          [type]="chartType">
+  </canvas>
+  <p *ngIf="charts.temp.data.datasets[0].data.length === 0">No hay datos disponibles</p>
+</div>
 
-  <!-- Gráfica PM2.5 -->
-  <div class="pm25-chart" *ngIf="charts.pm25.data.datasets[0].data.length > 0">
-    <h2>Material Particulado Fino (PM2.5 µg/m³)</h2>
-    <canvas baseChart
-      [data]="charts.pm25.data"
-      [options]="charts.pm25.options"
-      [type]="chartType">
-    </canvas>
-  </div>
+<div class="pm25-chart">
+  <h2>Material Particulado Fino (PM2.5 µg/m³)</h2>
+  <canvas *ngIf="charts.pm25.data.datasets[0].data.length > 0"
+          baseChart
+          #chartPM25
+          [data]="charts.pm25.data"
+          [options]="charts.pm25.options"
+          [type]="chartType">
+  </canvas>
+  <p *ngIf="charts.pm25.data.datasets[0].data.length === 0">No hay datos disponibles</p>
+</div>
+
+
 
 
   <div class="flex justify-center items-center p-4">

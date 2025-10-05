@@ -23,9 +23,9 @@ export interface CalidadAire {
   providedIn: 'root'
 })
 export class AireService {
-  private apiUrl = 'https://apiaire.onrender.com/api/aire/ver';
-  private apiUrl2 = 'https://apiaire.onrender.com/api/aire';
-  private apiUrlCalendar = 'https://apiaire.onrender.com/api/aire/ver/fecha';
+  private apiUrl = 'https://apiaire-lk31.onrender.com/api/aire/ver';
+  private apiUrl2 = 'https://apiaire-lk31.onrender.com/api/aire';
+  private apiUrlCalendar = 'https://apiaire-lk31.onrender.com/api/aire/ver/fecha';
 
   constructor(private http: HttpClient) {}
 

@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartType } from 'chart.js';
+import { ChangeDetectorRef } from '@angular/core';
 import { AireService, AireData } from '../services/aire.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -16,7 +17,10 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./graficas-sensores.component.css'],
 })
 export class GraficasSensoresComponent implements OnInit {
-  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+  @ViewChild('chartCO', { static: false, read: BaseChartDirective }) chartCO?: BaseChartDirective;
+@ViewChild('chartTemp', { static: false, read: BaseChartDirective }) chartTemp?: BaseChartDirective;
+@ViewChild('chartPM25', { static: false, read: BaseChartDirective }) chartPM25?: BaseChartDirective;
+
   calidadAire: number | null = null;
   categoria: string = '';
   consejo: string = '';
@@ -149,16 +153,23 @@ maxDate: string = '';
 
   public chartType: ChartType = 'line';
 
-  constructor(private aireService: AireService) {}
+  constructor(private aireService: AireService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
   // cada 10 segundos consulta de nuevo
-  this.subDatos = interval(10000).subscribe(() => this.loadAireData());
+  this.subDatos = interval(10000).subscribe(() => {
+  if (this.selectedDate) {
+    this.loadAireDataByDate();
+  } else {
+    this.loadAireData();
+  }
+});
+
   this.subIqa = interval(10000).subscribe(() => this.loadCalidadAire());
 
   // primera carga inmediata
-  this.loadAireData();
-  this.loadCalidadAire();
+  // this.loadAireData();
+  // this.loadCalidadAire();
 
   // Configuración del rango de fechas
   const today = new Date();
@@ -171,10 +182,20 @@ maxDate: string = '';
   this.minDate = min.toISOString().split('T')[0];
 }
 
+
+
   ngOnDestroy(): void {
     this.subDatos?.unsubscribe();
     this.subIqa?.unsubscribe();
   }
+
+
+  ngAfterViewInit() {
+  // Esto asegura que chartCO, chartTemp y chartPM25 existen
+  this.loadAireData();
+  this.loadCalidadAire();
+}
+
 
   setChart(type: 'co' | 'temp' | 'pm25') {
     this.selectedChart = type;
@@ -182,31 +203,27 @@ maxDate: string = '';
   }
 
   loadAireData(): void {
-    this.aireService.getAireData().subscribe({
-      next: (data: AireData[]) => {
-        const labels = data.map(d => {
-          if (!d.fecha_lectura) return `ID ${d.id}`;
-          return new Date(d.fecha_lectura).toLocaleTimeString('es-CO', {
-            hour: '2-digit',
-            minute: '2-digit',
-            timeZone: 'UTC'
-          });
-        });
+  this.aireService.getAireData().subscribe({
+    next: (data: AireData[]) => {
+      const labels = data.map(d =>
+        d.fecha_lectura ? new Date(d.fecha_lectura).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })
+                        : `ID ${d.id}`
+      );
 
-        // Actualizar datos para todas las gráficas
-        this.charts.co.data.labels = labels;
-        this.charts.temp.data.labels = labels;
-        this.charts.pm25.data.labels = labels;
+      this.charts.co.data.labels = labels;
+      this.charts.temp.data.labels = labels;
+      this.charts.pm25.data.labels = labels;
 
-        this.charts.co.data.datasets[0].data = data.map(d => d.co_ppm);
-        this.charts.temp.data.datasets[0].data = data.map(d => d.temp);
-        this.charts.pm25.data.datasets[0].data = data.map(d => d.pm25);
+      this.charts.co.data.datasets[0].data = data.map(d => d.co_ppm);
+      this.charts.temp.data.datasets[0].data = data.map(d => d.temp);
+      this.charts.pm25.data.datasets[0].data = data.map(d => d.pm25);
 
-        this.chart?.update();
-      },
-      error: (err) => console.error('Error al cargar datos:', err)
-    });
-  }
+      // No hace falta chartCO?.update() aquí
+    },
+    error: (err) => console.error('Error al cargar datos:', err)
+  });
+}
+
 
   loadCalidadAire(): void {
     this.aireService.getCalidadAire().subscribe({
@@ -243,6 +260,7 @@ loadAireDataByDate(): void {
     next: (data: AireData[]) => {
       if (!data || data.length === 0) {
         this.errorMessage = 'No hay datos disponibles para la fecha seleccionada.';
+
         // Limpiar gráficas si no hay datos
         this.charts.co.data.labels = [];
         this.charts.temp.data.labels = [];
@@ -250,22 +268,25 @@ loadAireDataByDate(): void {
         this.charts.co.data.datasets[0].data = [];
         this.charts.temp.data.datasets[0].data = [];
         this.charts.pm25.data.datasets[0].data = [];
-        this.chart?.update();
+
+        // Actualizar los charts en el próximo tick
+        setTimeout(() => {
+          this.chartCO?.update();
+          this.chartTemp?.update();
+          this.chartPM25?.update();
+        });
+
         return;
       }
 
       this.errorMessage = null;
 
-      const labels = data.map(d => {
-        if (!d.fecha_lectura) return `ID ${d.id}`;
-        return new Date(d.fecha_lectura).toLocaleTimeString('es-CO', {
-          hour: '2-digit',
-          minute: '2-digit',
-          timeZone: 'UTC'
-        });
-      });
+      const labels = data.map(d => d.fecha_lectura
+        ? new Date(d.fecha_lectura).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })
+        : `ID ${d.id}`
+      );
 
-      // Actualizar gráficas
+      // Actualizar datos de las gráficas
       this.charts.co.data.labels = labels;
       this.charts.temp.data.labels = labels;
       this.charts.pm25.data.labels = labels;
@@ -274,7 +295,12 @@ loadAireDataByDate(): void {
       this.charts.temp.data.datasets[0].data = data.map(d => d.temp);
       this.charts.pm25.data.datasets[0].data = data.map(d => d.pm25);
 
-      this.chart?.update();
+      // Actualizar los charts en el próximo tick
+      setTimeout(() => {
+        this.chartCO?.update();
+        this.chartTemp?.update();
+        this.chartPM25?.update();
+      });
     },
     error: (err) => {
       if (err.status === 404) {
@@ -286,6 +312,7 @@ loadAireDataByDate(): void {
     }
   });
 }
+
 
 
 
@@ -339,5 +366,24 @@ loadAireDataByDate(): void {
       },
     });
   }
+
+  showAllData(): void {
+  // Limpiar la fecha seleccionada
+  this.selectedDate = '';
+
+  // Limpiar mensaje de error
+  this.errorMessage = null;
+
+  // Cargar todos los datos
+  this.loadAireData();
+
+  // Actualizar gráficas después de que se carguen los datos
+  setTimeout(() => {
+    this.chartCO?.update();
+    this.chartTemp?.update();
+    this.chartPM25?.update();
+  });
+}
+
 
 }

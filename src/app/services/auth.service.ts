@@ -10,7 +10,7 @@ import { RegisterRequest } from '../models/sing-up-response/Register-Request';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://apiaire.onrender.com/api';
+  private apiUrl = 'https://apiaire-lk31.onrender.com/api';
 
   constructor(private http: HttpClient, private router: Router) {}
 
