@@ -80,11 +80,14 @@
 }
 
 .image-section img {
-  max-width: 100%;
-  max-height: 70vh;
+  max-width: 60%;
+  max-height: 400px; /* o la altura que mejor se vea */
   object-fit: contain;
   border-radius: 10px;
+  display: block;
+  margin: 0 auto;
 }
+
 
 /* Parallax */
 .parallax {
