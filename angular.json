@@ -37,10 +37,10 @@
               "input": "src/assets",
               "output": "/assets"
             },
-            {
-               "glob": "**/*",
-               "input": "public",
-               "output": "/public"
+                    {
+              "glob": "_redirects",
+              "input": ".",
+              "output": "/"
             }
             ],
 
