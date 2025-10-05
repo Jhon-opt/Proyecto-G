@@ -40,12 +40,12 @@ export class AireService {
       co_ppm: Number(item.co_ppm),
       temp: item.temp ? Number(item.temp) : null,
       pm25: item.pm25 ? Number(item.pm25) : null,
-      fecha_lectura: item.fecha_lectura || null
+      fecha_lectura: item.fecha_bogota || item.fecha_lectura || null
     }));
   }
 
  // Cambia la URL de 'nga' a 'iqa'
 getCalidadAire(): Observable<CalidadAire> {
-  return this.http.get<CalidadAire>(`${this.apiUrl2}/iqa`); // Usa /iqa en lugar de /nga
+  return this.http.get<CalidadAire>(`${this.apiUrl2}/iqa`);
 }
 }

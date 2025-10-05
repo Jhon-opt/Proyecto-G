@@ -24,7 +24,7 @@ export class HomeComponent implements AfterViewInit {
   map = signal<maplibregl.Map | null>(null);
   cordinates = signal({ lat: 4.5796, lng: -74.1572 });
   zoom = signal(17);
-  icaValue = signal(18);
+  icaValue = signal<number | null>(null); // ✅ ahora arranca en null
 
   // Efecto para sincronizar el zoom con la señal
   zoomEffect = effect(() => {
@@ -47,45 +47,29 @@ export class HomeComponent implements AfterViewInit {
       maxZoom: 18,
       maxPitch: 0,
       style: {
-  version: 8,
-  sources: {
-    osm: {
-      type: 'raster',
-      tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      attribution: '&copy; OpenStreetMap Contributors',
-      maxzoom: 19
-    }
-  },
-  layers: [
-    {
-      id: 'osm',
-      type: 'raster',
-      source: 'osm'
-    }
-  ]
-  // ❌ SIN terrain ni hillshade para mantenerlo simple
-}
+        version: 8,
+        sources: {
+          osm: {
+            type: 'raster',
+            tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
+            tileSize: 256,
+            attribution: '&copy; OpenStreetMap Contributors',
+            maxzoom: 19
+          }
+        },
+        layers: [
+          {
+            id: 'osm',
+            type: 'raster',
+            source: 'osm'
+          }
+        ]
+      }
     });
 
-    // ✅ CORREGIDO: Crear el marcador DESPUÉS de map.on('load')
+    // ✅ cuando el mapa cargue, pedimos el valor real del servicio
     map.on('load', () => {
-      const el = document.createElement('div');
-      el.className = 'marker';
-      el.innerHTML = `
-        <div class="p-2 bg-black rounded-lg shadow-md border border-gray-700 text-center">
-          <p class="text-[10px] text-white mb-1">🌱 Calidad del aire según ICA</p>
-          <div class="w-12 h-12 flex items-center justify-center rounded-full bg-green-500 text-black font-bold text-lg mx-auto">
-            ${this.icaValue()}
-          </div>
-        </div>
-      `;
-
-      const newMarker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
-        .setLngLat([-74.1572, 4.5796])
-        .addTo(map);
-
-      this.marker.set({ mapboxMarker: newMarker });
+      this.loadICA();
     });
 
     this.mapListener(map);
@@ -110,9 +94,18 @@ export class HomeComponent implements AfterViewInit {
       })
     );
 
-    // ✅ CORREGIDO: QUITÉ LA LLAMADA RECURSIVA
-    // Solo setear el mapa
     this.map.set(map);
+  }
+
+  // 🚀 Nuevo: carga del valor ICA desde el servicio
+  private loadICA() {
+    this.icaService.getCalidadAire().subscribe({
+      next: (data) => {
+        this.icaValue.set(data.calidad_aire); // guardamos el valor real
+        this.updateMarker(); // actualizamos marcador con el valor correcto
+      },
+      error: (err) => console.error('Error al cargar ICA:', err)
+    });
   }
 
   // MÉTODO PARA ACTUALIZAR EL MARCADOR MANUALMENTE
@@ -120,21 +113,20 @@ export class HomeComponent implements AfterViewInit {
     const currentMap = this.map();
     if (!currentMap) return;
 
-    // Remover marcador anterior
+    // eliminar marcador anterior si existe
     const currentMarker = this.marker();
     if (currentMarker) {
       currentMarker.mapboxMarker.remove();
       this.marker.set(null);
     }
 
-    // Crear nuevo marcador
     const el = document.createElement('div');
     el.className = 'marker';
     el.innerHTML = `
       <div class="p-2 bg-black rounded-lg shadow-md border border-gray-700 text-center">
         <p class="text-[10px] text-white mb-1">🌱 Calidad del aire según ICA</p>
         <div class="w-12 h-12 flex items-center justify-center rounded-full bg-green-500 text-black font-bold text-lg mx-auto">
-          ${this.icaValue()}
+          ${this.icaValue() ?? '--'}
         </div>
       </div>
     `;
@@ -146,7 +138,7 @@ export class HomeComponent implements AfterViewInit {
     this.marker.set({ mapboxMarker: newMarker });
   }
 
-  // MÉTODO PARA CAMBIAR EL VALOR DEL ICA
+  // MÉTODO PARA CAMBIAR EL VALOR DEL ICA (manual/test)
   changeICA(newValue: number) {
     this.icaValue.set(newValue);
     this.updateMarker();

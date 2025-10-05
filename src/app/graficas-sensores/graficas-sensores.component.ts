@@ -4,11 +4,12 @@ import { ChartConfiguration, ChartType } from 'chart.js';
 import { AireService, AireData } from '../services/aire.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-graficas-sensores',
   standalone: true,
-  imports: [BaseChartDirective,CommonModule,RouterModule],
+  imports: [BaseChartDirective, CommonModule, RouterModule],
   templateUrl: './graficas-sensores.component.html',
   styleUrls: ['./graficas-sensores.component.css'],
 })
@@ -17,6 +18,13 @@ export class GraficasSensoresComponent implements OnInit {
   calidadAire: number | null = null;
   categoria: string = '';
   consejo: string = '';
+
+  // Nueva propiedad para saber qué gráfica mostrar
+  selectedChart: 'co' | 'temp' | 'pm25' = 'co';
+
+  private subDatos?: Subscription;
+  private subIqa?: Subscription;
+
   // Configuración para las tres gráficas
   public charts = {
     co: {
@@ -37,7 +45,7 @@ export class GraficasSensoresComponent implements OnInit {
           x: {
             title: {
               display: true,
-              text: 'Fecha de lectura (YYYY-MM-DD)',
+              text: 'Hora de lectura',
               color: '#FFFFFF',
               font: { size: 16, weight: 'bold' }
             },
@@ -53,9 +61,7 @@ export class GraficasSensoresComponent implements OnInit {
             ticks: { color: '#FFFFFF' }
           }
         },
-        plugins: {
-          legend: { labels: { color: '#FFFFFF' } }
-        }
+        plugins: { legend: { labels: { color: '#FFFFFF' } } }
       }
     },
     temp: {
@@ -76,7 +82,7 @@ export class GraficasSensoresComponent implements OnInit {
           x: {
             title: {
               display: true,
-              text: 'Fecha de lectura (YYYY-MM-DD)',
+              text: 'Hora de lectura',
               color: '#FFFFFF',
               font: { size: 16, weight: 'bold' }
             },
@@ -92,9 +98,7 @@ export class GraficasSensoresComponent implements OnInit {
             ticks: { color: '#FFFFFF' }
           }
         },
-        plugins: {
-          legend: { labels: { color: '#FFFFFF' } }
-        }
+        plugins: { legend: { labels: { color: '#FFFFFF' } } }
       }
     },
     pm25: {
@@ -115,7 +119,7 @@ export class GraficasSensoresComponent implements OnInit {
           x: {
             title: {
               display: true,
-              text: 'Fecha de lectura (YYYY-MM-DD)',
+              text: 'Hora de lectura',
               color: '#FFFFFF',
               font: { size: 16, weight: 'bold' }
             },
@@ -131,9 +135,7 @@ export class GraficasSensoresComponent implements OnInit {
             ticks: { color: '#FFFFFF' }
           }
         },
-        plugins: {
-          legend: { labels: { color: '#FFFFFF' } }
-        }
+        plugins: { legend: { labels: { color: '#FFFFFF' } } }
       }
     }
   };
@@ -143,21 +145,36 @@ export class GraficasSensoresComponent implements OnInit {
   constructor(private aireService: AireService) {}
 
   ngOnInit(): void {
+    // cada 10 segundos consulta de nuevo
+    this.subDatos = interval(10000).subscribe(() => this.loadAireData());
+    this.subIqa = interval(10000).subscribe(() => this.loadCalidadAire());
+
+    // primera carga inmediata
     this.loadAireData();
     this.loadCalidadAire();
+  }
+
+  ngOnDestroy(): void {
+    this.subDatos?.unsubscribe();
+    this.subIqa?.unsubscribe();
+  }
+
+  setChart(type: 'co' | 'temp' | 'pm25') {
+    this.selectedChart = type;
+    console.log("Gráfica seleccionada:", type);
   }
 
   loadAireData(): void {
     this.aireService.getAireData().subscribe({
       next: (data: AireData[]) => {
         const labels = data.map(d => {
-  if (!d.fecha_lectura) return `ID ${d.id}`;
-  return new Date(d.fecha_lectura).toLocaleTimeString('es-CO', {
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZone: 'UTC' // fuerza UTC
-  });
-});
+          if (!d.fecha_lectura) return `ID ${d.id}`;
+          return new Date(d.fecha_lectura).toLocaleTimeString('es-CO', {
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: 'UTC'
+          });
+        });
 
         // Actualizar datos para todas las gráficas
         this.charts.co.data.labels = labels;
@@ -170,9 +187,7 @@ export class GraficasSensoresComponent implements OnInit {
 
         this.chart?.update();
       },
-      error: (err) => {
-        console.error('Error al cargar datos:', err);
-      }
+      error: (err) => console.error('Error al cargar datos:', err)
     });
   }
 
