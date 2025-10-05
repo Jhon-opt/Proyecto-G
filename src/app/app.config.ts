@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
         loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent),
         canActivate: [AuthGuard]
       },
-      { path: 'recuperar-contrasena', loadComponent: () => import('./pages/recuperar-contrasena/recuperar-contrasena.component').then(m => m.RecuperarContrasenaComponent) },
+      { path: 'recuperar-contraseña', loadComponent: () => import('./pages/recuperar-contrasena/recuperar-contrasena.component').then(m => m.RecuperarContrasenaComponent) },
       { path: 'informacion-proyecto', loadComponent: () => import('./pages/informacion-proyecto/informacion-proyecto.component').then(m => m.InformacionProyectoComponent) },
       { path: 'enlaces', loadComponent: () => import('./pages/enlaces/enlaces.component').then(m => m.EnlacesComponent) },
       { path: 'enlaces-videos', loadComponent: () => import('./pages/enlaces/enlaces-videos/enlaces-videos.component').then(m => m.EnlacesVideosComponent) },
@@ -28,10 +28,14 @@ export const appConfig: ApplicationConfig = {
         loadComponent: () => import('./graficas-sensores/graficas-sensores.component').then(m => m.GraficasSensoresComponent),
         canActivate: [AuthGuard]
       },
+      // {
+      //   path: 'descargar-datos',
+      //   loadComponent: () => import('./descargarDatos/descargarDatos.component').then(m => m.DescargarDatosComponent),
+      //   canActivate: [AuthGuard]
+      // },
+
       {
-        path: 'descargar-datos',
-        loadComponent: () => import('./descargarDatos/descargarDatos.component').then(m => m.DescargarDatosComponent),
-        canActivate: [AuthGuard]
+        path: 'cambiar-contraseña',loadComponent: () => import('./pages/cambiar-contraseña/cambiar-contraseña.component').then(m => m.CambiarPasswordComponent),
       },
       { path: '**', redirectTo: 'login' },
     ]),
