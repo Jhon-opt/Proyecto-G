@@ -64,7 +64,7 @@ updatePassword(nuevaPassword: string, token: string): Observable<any> {
   // Se asume que el backend requiere un token para identificar al usuario
   const headers = { Authorization: `Bearer ${token}` };
   return this.http.put<any>(
-    `${this.apiUrl}/updatePassword`,
+    `${this.apiUrl}/cambiarPassword`,
     { password: nuevaPassword },
     { headers }
   );
