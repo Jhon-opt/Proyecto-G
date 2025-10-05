@@ -1,13 +1,26 @@
 <div class="grafica-container">
   <!-- Sección Calidad del Aire -->
   <div class="calidad-aire" *ngIf="categoria && consejo">
-    <h2>Calidad del Aire Actual</h2>
-    <div class="indicador">
-      <span class="valor">{{ calidadAire !== null ? (calidadAire | number:'1.1-1') : '---' }}</span>
-      <span class="categoria {{ categoria | lowercase }}">{{ categoria }}</span>
-    </div>
-    <p class="consejo">{{ consejo }}</p>
+  <h2 class="text-xl font-semibold mb-2">Calidad del Aire Actual</h2>
+  <div class="indicador flex items-center gap-4">
+
+    <!-- Valor grande -->
+    <span class="text-5xl font-bold" [ngClass]="getColorClass()">
+      {{ calidadAire !== null ? (calidadAire | number:'1.1-1') : '---' }}
+    </span>
+
+    <!-- Categoría con badge -->
+    <span class="px-4 py-2 rounded-full font-bold uppercase border"
+          [ngClass]="getColorClass()">
+      {{ categoria }}
+    </span>
   </div>
+
+  <!-- Consejo -->
+  <p class="consejo mt-3 text-gray-200">{{ consejo }}</p>
+</div>
+
+
 
   <!-- Controles de rango -->
   <!-- <div class="rango-botones flex gap-3 my-4">

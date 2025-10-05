@@ -109,33 +109,51 @@ export class HomeComponent implements AfterViewInit {
   }
 
   // MÉTODO PARA ACTUALIZAR EL MARCADOR MANUALMENTE
-  updateMarker() {
-    const currentMap = this.map();
-    if (!currentMap) return;
+  private getColorClass(ica: number | null): string {
+  if (ica === null) return 'bg-gray-400';
 
-    // eliminar marcador anterior si existe
-    const currentMarker = this.marker();
-    if (currentMarker) {
-      currentMarker.mapboxMarker.remove();
-      this.marker.set(null);
-    }
+  if (ica >= 0 && ica <= 50) {
+    return 'bg-green-500'; // Verde
+  } else if (ica <= 100) {
+    return 'bg-yellow-400'; // Amarillo
+  } else if (ica <= 150) {
+    return 'bg-orange-500'; // Naranja
+  } else if (ica <= 200) {
+    return 'bg-red-600'; // Rojo
+  } else {
+    return 'bg-purple-700'; // Morado
+  }
+}
 
-    const el = document.createElement('div');
-    el.className = 'marker';
-    el.innerHTML = `
-      <div class="p-2 bg-black rounded-lg shadow-md border border-gray-700 text-center">
-        <p class="text-[10px] text-white mb-1">🌱 Calidad del aire según ICA</p>
-        <div class="w-12 h-12 flex items-center justify-center rounded-full bg-green-500 text-black font-bold text-lg mx-auto">
-          ${this.icaValue() ?? '--'}
-        </div>
+updateMarker() {
+  const currentMap = this.map();
+  if (!currentMap) return;
+
+  // eliminar marcador anterior si existe
+  const currentMarker = this.marker();
+  if (currentMarker) {
+    currentMarker.mapboxMarker.remove();
+    this.marker.set(null);
+  }
+
+  const el = document.createElement('div');
+  const colorClass = this.getColorClass(this.icaValue());
+
+  el.className = 'marker';
+  el.innerHTML = `
+    <div class="p-2 bg-black rounded-lg shadow-md border border-gray-700 text-center">
+      <p class="text-[10px] text-white mb-1">🌱 Calidad del aire según ICA</p>
+      <div class="w-12 h-12 flex items-center justify-center rounded-full ${colorClass} text-black font-bold text-lg mx-auto">
+        ${this.icaValue() ?? '--'}
       </div>
-    `;
+    </div>
+  `;
 
-    const newMarker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
-      .setLngLat([-74.1572, 4.5796])
-      .addTo(currentMap);
+  const newMarker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
+    .setLngLat([-74.1572, 4.5796])
+    .addTo(currentMap);
 
-    this.marker.set({ mapboxMarker: newMarker });
+  this.marker.set({ mapboxMarker: newMarker });
   }
 
   // MÉTODO PARA CAMBIAR EL VALOR DEL ICA (manual/test)

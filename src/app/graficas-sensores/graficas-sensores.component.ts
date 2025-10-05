@@ -205,6 +205,22 @@ export class GraficasSensoresComponent implements OnInit {
     });
   }
 
+// Devuelve un color segun la calificación ICA
+getColorClass(): string {
+  if (this.calidadAire === null) return 'text-gray-400';
+
+  if (this.calidadAire >= 0 && this.calidadAire <= 50) {
+    return 'text-green-500'; // Verde
+  } else if (this.calidadAire <= 100) {
+    return 'text-yellow-500'; // Amarillo
+  } else if (this.calidadAire <= 150) {
+    return 'text-orange-500'; // Naranja
+  } else if (this.calidadAire <= 200) {
+    return 'text-red-600'; // Rojo
+  } else {
+    return 'text-purple-700'; // Morado
+  }
+}
 
 
 
